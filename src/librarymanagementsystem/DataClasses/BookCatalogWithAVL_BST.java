@@ -140,12 +140,12 @@ public class BookCatalogWithAVL_BST {
         return root;
     }
 
-    public Book search(String item) {
+    public Book searchByTitle(String item) {
 
-        return searchRec(root, item).data;
+        return searchByTitleRec(root, item).data;
     }
 
-    private BinaryNode searchRec(BinaryNode root, String item) {
+    private BinaryNode searchByTitleRec(BinaryNode root, String item) {
         if (root == null) {
             System.out.println("Book wasn't founded: " + item);
             return null;
@@ -155,11 +155,41 @@ public class BookCatalogWithAVL_BST {
                 return root;
             } else {
                 if (compareTo(item, root.data.getTitle()) < 0) {
-                    return searchRec(root.left, item);
+                    return searchByTitleRec(root.left, item);
                 } else {
                     if (compareTo(item, root.data.getTitle()) > 0) {
 
-                        return searchRec(root.right, item);
+                        return searchByTitleRec(root.right, item);
+
+                    }
+
+                }
+            }
+        }
+        return null;
+
+    }
+
+    public Book searchByAuthor(String item) {
+
+        return searchByAuthorRec(root, item).data;
+    }
+
+    private BinaryNode searchByAuthorRec(BinaryNode root, String item) {
+        if (root == null) {
+            System.out.println("Book wasn't founded: " + item);
+            return null;
+        } else {
+            if (compareTo(item, root.data.getAuthor()) == 0) {
+                System.out.println("Book was founded:" + root.data.getTitle());
+                return root;
+            } else {
+                if (compareTo(item, root.data.getAuthor()) < 0) {
+                    return searchByAuthorRec(root.left, item);
+                } else {
+                    if (compareTo(item, root.data.getAuthor()) > 0) {
+
+                        return searchByAuthorRec(root.right, item);
 
                     }
 

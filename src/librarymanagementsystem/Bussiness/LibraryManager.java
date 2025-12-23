@@ -28,22 +28,43 @@ public class LibraryManager {
         bookCatalog.insert(book);
         System.out.println("'" + book.getTitle() + "'  eklendi.");
     }
-
-    public void removeFromCatalog(String title) {
-        Book book = bookCatalog.search(title);
+   //tekrar bak
+    public void removeFromCatalogByTitle(String title) {
+        Book book = bookCatalog.searchByTitle(title);
         if (book != null) {
             bookCatalog.delete(book);
         }
     }
+    
+    public void removeFromCatalogByAuthor(String author) {
+        Book book = bookCatalog.searchByAuthor(author);
+        if (book != null) {
+            bookCatalog.delete(book);
+        }
+    }
+    
+    
 
-    public void searchInCatalog(String title) {
-        Book book = bookCatalog.search(title);
+    public void searchInCatalogByTitle(String title) {
+        Book book = bookCatalog.searchByTitle(title);
         if (book != null) {
             System.out.println("ARAMA SONUCU : ");
             
             book.printBook();
         }
     }
+    
+     public void searchInCatalogByAuthor(String author) {
+        Book book = bookCatalog.searchByAuthor(author);
+        if (book != null) {
+            System.out.println("ARAMA SONUCU : ");
+            
+            book.printBook();
+        }
+    }
+    
+    
+    
     
     //Reader İşlemleri
     
@@ -54,15 +75,32 @@ public class LibraryManager {
     
     
     
+    public Book getById(int bookId){
+        
+        
+        
+        
+        return null;
+    }
+    
+    
+    //id kullan(book)
     public void lendToUser(Book book, int userId){
     User u=getUserById(userId);
     if(book!=null&&u!=null){
     u.getBorrowedBooks().add(book);
+    book.setIsAvailable(false);
         System.out.println(book.getTitle()+" kitabı  "+u.getUserName()+" adlı kullanıcıya verildi.");
     }
         
     }
-    public void returnFromUser(){}
+    public void returnFromUser(){
+    //waitlist güncelle
+    //book.setIsAvailable güncelle
+    
+    
+    
+    }
     
     
     

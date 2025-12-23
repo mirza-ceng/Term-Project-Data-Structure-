@@ -9,7 +9,7 @@ import librarymanagementsystem.Entity.Book;
 import librarymanagementsystem.Entity.Genre;
 import static librarymanagementsystem.Entity.Genre.BookGenres.*;
 
-/**d
+/*
  *
  * @author 2005m
  */

@@ -21,13 +21,13 @@ public class Book {
     private String publicationYear;
 
     // add WaitList using Queue
-    public Book(String title, String author, String publisher, BookGenres genre, boolean isAvailable, String publicationYear, int id) {
+    public Book(String title, String author, String publisher, BookGenres genre, String publicationYear, int id) {
         this.title = title;
         this.id = id;
         this.author = author;
         this.publisher = publisher;
         this.genre = genre;
-        this.isAvailable = isAvailable;
+        this.isAvailable = true;
         this.publicationYear = publicationYear;
     }
 
