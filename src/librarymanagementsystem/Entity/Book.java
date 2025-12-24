@@ -4,6 +4,7 @@
  */
 package librarymanagementsystem.Entity;
 
+import librarymanagementsystem.DataClasses.WaitListWithQueue;
 import librarymanagementsystem.Entity.Genre.BookGenres;
 
 /**
@@ -15,10 +16,12 @@ public class Book {
     private String title;
     private String author;
     private String publisher;
-    private BookGenres genre;
+    private Genre.BookGenres genre;
     private int id;
     private boolean isAvailable;
     private String publicationYear;
+    private int borrowCount = 0;
+    private WaitListWithQueue waitList;
 
     // add WaitList using Queue
     public Book(String title, String author, String publisher, BookGenres genre, String publicationYear, int id) {
@@ -29,6 +32,23 @@ public class Book {
         this.genre = genre;
         this.isAvailable = true;
         this.publicationYear = publicationYear;
+        this.waitList = new WaitListWithQueue();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public WaitListWithQueue getWaitList() {
+        return waitList;
+    }
+
+    public void setWaitList(WaitListWithQueue waitList) {
+        this.waitList = waitList;
     }
 
     public String getTitle() {
@@ -59,7 +79,6 @@ public class Book {
         return genre;
     }
 
-    
     public void setGenre(BookGenres genre) {
         this.genre = genre;
     }
@@ -80,6 +99,15 @@ public class Book {
         this.publicationYear = publicationYear;
     }
 
+    //popülarite takibi için
+    public void incrementBorrowCount() {
+        borrowCount++;
+    }
+
+    public int getBorrowCount() {
+        return borrowCount;
+    }
+
     public void printBook() {
         System.out.println("--------------------------------------------------------");
         System.out.println("Title :" + this.title);
@@ -91,6 +119,21 @@ public class Book {
 
     }
 
+    public void addUserToWaitList(int userId) {
+        waitList.addToWaitList(userId, this.id);
+    }
+
+    public int[] getNextWaitingUser() {
+        return waitList.getNextFromWaitList();
+    }
+
+    public boolean hasWaitingUsers() {
+        return waitList.hasWaitersForBook(this.id);
+    }
+
+    public void showWaitList() {
+        System.out.println("=== Waitlist for: " + this.title + " ===");
+        waitList.showWaitList();
+    }
+
 }
-
-

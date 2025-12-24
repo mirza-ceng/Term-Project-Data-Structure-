@@ -19,13 +19,16 @@ public class LibraryManagementSystem {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Genre g = new Genre();
-        Book book = new Book("İrade", "jorge", "aaa", CLASSICS, true, "", 0);
+        
+
+        Book book = new Book("İrade", "jorge", "aaa", CLASSICS, "", 0);
+        
+        
 
         LibraryManager manager = new LibraryManager();
 
         manager.addBookToCatalog(book);
-        manager.searchInCatalog("İrade");
+        manager.searchInCatalogByTitle("İrade");
 
     }
 

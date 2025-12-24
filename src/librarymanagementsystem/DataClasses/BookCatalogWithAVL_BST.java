@@ -39,10 +39,12 @@ public class BookCatalogWithAVL_BST {
 
     }
 
-    private BinaryNode root;
+    private BinaryNode rootByTitle;
+    private BinaryNode rootByAuthor;
 
     public BookCatalogWithAVL_BST() {
-        root = null;
+        rootByTitle = null;
+        rootByAuthor = null;
     }
 
     public int height(BinaryNode node) {
@@ -92,25 +94,31 @@ public class BookCatalogWithAVL_BST {
         return y;
     }
 
-    public void insert(Book item) {
-        root = insertRec(root, item);
-    }
-
     private int compareTo(String item1, String item2) {
         return item1.compareToIgnoreCase(item2);
 
     }
 
-    private BinaryNode insertRec(BinaryNode root, Book item) {
+    public void insert(Book item) {
+
+        rootByTitle = insertRec(rootByTitle, item, true);
+        rootByAuthor = insertRec(rootByAuthor, item, false);
+    }
+
+    private BinaryNode insertRec(BinaryNode root, Book item, Boolean isTitle) {
         if (root == null) {
             root = new BinaryNode(item);
 
             return root;
         }
-        if (compareTo(item.getTitle(), root.data.getTitle()) < 0) {
-            root.left = insertRec(root.left, item);
-        } else if (compareTo(item.getTitle(), root.data.getTitle()) > 0) {
-            root.right = insertRec(root.right, item);
+
+        String compareField = isTitle ? item.getTitle() : item.getAuthor();
+        String rootCompareField = isTitle ? root.data.getTitle() : root.data.getAuthor();
+
+        if (compareTo(compareField, rootCompareField) < 0) {
+            root.left = insertRec(root.left, item, isTitle);
+        } else if (compareTo(compareField, rootCompareField) > 0) {
+            root.right = insertRec(root.right, item, isTitle);
         }
 
         //update height
@@ -118,22 +126,23 @@ public class BookCatalogWithAVL_BST {
 
         int balance = getBalance(root);
         //in case of imbalance
+
         //LL
-        if (balance > 1 && compareTo(item.getTitle(), root.left.data.getTitle()) < 0) {
+        if (balance > 1 && getBalance(root.left) >= 0) {
             return rightRotate(root);
         }
         //RL
-        if (balance < -1 && compareTo(item.getTitle(), root.right.data.getTitle()) < 0) {
+        if (balance < -1 && getBalance(root.right) > 0) {
             root.right = rightRotate(root.right);
             return leftRotate(root);
         }
         //RR
-        if (balance < -1 && compareTo(item.getTitle(), root.right.data.getTitle()) > 0) {
+        if (balance < -1 && getBalance(root.right) <= 0) {
 
             return leftRotate(root);
         }
         //LR  
-        if (balance > 1 && compareTo(item.getTitle(), root.left.data.getTitle()) > 0) {
+        if (balance > 1 && getBalance(root.left) < 0) {
             root.left = leftRotate(root.left);
             return rightRotate(root);
         }
@@ -141,8 +150,11 @@ public class BookCatalogWithAVL_BST {
     }
 
     public Book searchByTitle(String item) {
+        if (searchByTitleRec(rootByTitle, item).data != null) {
+            return searchByTitleRec(rootByTitle, item).data;
+        }
+        return null;
 
-        return searchByTitleRec(root, item).data;
     }
 
     private BinaryNode searchByTitleRec(BinaryNode root, String item) {
@@ -171,8 +183,10 @@ public class BookCatalogWithAVL_BST {
     }
 
     public Book searchByAuthor(String item) {
-
-        return searchByAuthorRec(root, item).data;
+        if (searchByAuthorRec(rootByAuthor, item).data != null) {
+            return searchByAuthorRec(rootByAuthor, item).data;
+        }
+        return null;
     }
 
     private BinaryNode searchByAuthorRec(BinaryNode root, String item) {
@@ -200,44 +214,72 @@ public class BookCatalogWithAVL_BST {
 
     }
 
+    //---------------------------------------------------------------------------------------------------
     public void delete(Book item) {
-        deleteRec(root, item);
+        rootByTitle = deleteRec(rootByTitle, item, true);
+        rootByAuthor = deleteRec(rootByAuthor, item, false);
     }
 
-    //change and inject  for AVL
-    //https://gemini.google.com/app/1561a55dcd9430f5
-    private BinaryNode deleteRec(BinaryNode root, Book item) {
+    private BinaryNode deleteRec(BinaryNode root, Book item, boolean isTitle) {
         if (root == null) {
             return null; // Kitap bulunamadı veya ağaç boş.
         }
 
-        // A. Arama/Dolaşma (root.left VEYA root.right'ı güncellemek için dönüş değerini kullanırız)
-        if (compareTo(item.getTitle(), root.data.getTitle()) < 0) {
-            root.left = deleteRec(root.left, item); // Sol alt ağacın yeni kökünü alır.
-        } else if (compareTo(item.getTitle(), root.data.getTitle()) > 0) {
-            root.right = deleteRec(root.right, item); // Sağ alt ağacın yeni kökünü alır.
-        } // B. Düğüm Bulundu (root = silinecek düğüm)
+        // Arama/Dolaşma
+        String compareField = isTitle ? item.getTitle() : item.getAuthor();
+        String rootCompareField = isTitle ? root.data.getTitle() : root.data.getAuthor();
+
+        if (compareTo(compareField, rootCompareField) < 0) {
+            root.left = deleteRec(root.left, item, isTitle); // Sol alt ağacın yeni kökünü alır.
+        } else if (compareTo(compareField, rootCompareField) > 0) {
+            root.right = deleteRec(root.right, item, isTitle); // Sağ alt ağacın yeni kökünü alır.
+        } // Düğüm Bulundu (root = silinecek düğüm)
         else {
             // Durum 1 & 2: 0 veya 1 çocuk
             if (root.left == null) {
-                return root.right; // Tek çocuğu (sağ) döndür veya null döndür (0 çocuk).
+                root = root.right;
             } else if (root.right == null) {
-                return root.left; // Tek çocuğu (sol) döndür.
+                root = root.left;
+            } else {
+                // Durum 3: İki çocuk
+                // 1. Successor'ı bul (en küçük sağ alt ağaç)
+                BinaryNode successor = findMin(root.right);
+                // 2. Successor'ın değerini silinecek düğüme kopyala
+                root.data = successor.data;
+                // Successor sağ alt ağacın yeni kökü olacak şekilde deleteRec'i çağırırız
+                root.right = deleteRec(root.right, successor.data, isTitle);
             }
-
-            // Durum 3: İki çocuk
-            // 1. Successor'ı bul (en küçük sağ alt ağaç)
-            BinaryNode successor = findMin(root.right);
-
-            // 2. Successor'ın değerini silinecek düğüme kopyala
-            root.data = successor.data; // ÖNEMLİ: Değer kopyalanır.
-
-            // 3. Successor'ı orijinal konumundan sil
-            // Successor, sağ alt ağacın yeni kökü olacak şekilde deleteRec'i çağırırız.
-            root.right = deleteRec(root.right, successor.data);
         }
 
-        return root; // Ağacın kökünü (veya alt ağacın kökünü) döndür.
+        root.height = 1 + Math.max(height(root.right), height(root.left));
+
+        int balance = getBalance(root);
+        //Rotations
+        //LL
+
+        if (balance > 1 && getBalance(root.left) >= 0) {
+            return rightRotate(root);
+        }
+
+        // LR 
+        if (balance > 1 && getBalance(root.left) < 0) {
+            root.left = leftRotate(root.left);
+            return rightRotate(root);
+        }
+
+        // RR 
+        if (balance < -1 && getBalance(root.right) <= 0) {
+            return leftRotate(root);
+        }
+
+        // RL 
+        if (balance < -1 && getBalance(root.right) > 0) {
+            root.right = rightRotate(root.right);
+            return leftRotate(root);
+        }
+
+        return root;
+
     }
 
     private BinaryNode findMin(BinaryNode root) {
