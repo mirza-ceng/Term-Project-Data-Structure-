@@ -105,6 +105,10 @@ public class Book {
         borrowCount++;
     }
 
+    public void decrementBorrowCount() {
+        borrowCount--;
+    }
+
     public void setBorrowCount(int borrowCount) {
         this.borrowCount = borrowCount;
     }

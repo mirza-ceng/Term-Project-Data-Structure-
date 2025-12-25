@@ -12,16 +12,25 @@ import java.time.LocalDate;
  */
 public class Loan {
 
-    private int readerId;
+    private int readerId;//user
     private int bookId;
-    private LocalDate borrowDate;
+    private boolean isLend;//or borrow operation
+    private LocalDate operationDate;
     private LocalDate lastReturnDate;
 
-    public Loan(int readerId, int bookId) {
+    public Loan(int readerId, int bookId, boolean isLend) {
         this.readerId = readerId;
         this.bookId = bookId;
-        this.borrowDate = LocalDate.now();
-        this.lastReturnDate = this.borrowDate.plusDays(14); // A book can be borrowed for 14 days!!
+        this.operationDate = LocalDate.now();
+        this.lastReturnDate = isLend ? this.operationDate.plusDays(14) : null; // A book can be borrowed for 14 days!!
+        this.isLend = isLend;
+    }
+    public boolean isIsLend() {
+        return isLend;
+    }
+
+    public void setIsLend(boolean isLend) {
+        this.isLend = isLend;
     }
 
     public int getReaderId() {
@@ -40,12 +49,12 @@ public class Loan {
         this.bookId = bookId;
     }
 
-    public LocalDate getBorrowDate() {
-        return borrowDate;
+    public LocalDate getOperationDate() {
+        return operationDate;
     }
 
-    public void setBorrowDate(LocalDate borrowDate) {
-        this.borrowDate = borrowDate;
+    public void setOperationDate(LocalDate operationDate) {
+        this.operationDate = operationDate;
     }
 
     public LocalDate getLastReturnDate() {
@@ -54,6 +63,16 @@ public class Loan {
 
     public void setLastReturnDate(LocalDate lastReturnDate) {
         this.lastReturnDate = lastReturnDate;
+    }
+
+    public void printLoanInfo() {
+        System.out.println("Member ID :" + getReaderId());
+        System.out.println("Book ID :" + getBookId());
+        String op = isIsLend() ? "LEND" : "BORROW";
+        System.out.print("OPERATİON " + op);
+        System.out.println(op + " DATE : " + getOperationDate());
+        String returnDate = isLend ? getLastReturnDate().toString() : "---";
+        System.out.println("LAST RETURN DATE :" + returnDate);
     }
 
 }

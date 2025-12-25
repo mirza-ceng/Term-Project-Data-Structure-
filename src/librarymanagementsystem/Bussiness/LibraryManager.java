@@ -6,10 +6,11 @@ package librarymanagementsystem.Bussiness;
 
 import java.util.HashMap;
 import librarymanagementsystem.DataClasses.BookCatalogWithAVL_BST;
-import librarymanagementsystem.DataClasses.BorrowedBooksLinkedList;
 import librarymanagementsystem.DataClasses.PopularityWithHeap;
-import librarymanagementsystem.DataClasses.WaitListWithQueue;
+import librarymanagementsystem.DataClasses.UndoStack;
+
 import librarymanagementsystem.Entity.Book;
+import librarymanagementsystem.Entity.Loan;
 import librarymanagementsystem.Entity.User;
 
 /**
@@ -18,10 +19,13 @@ import librarymanagementsystem.Entity.User;
  */
 public class LibraryManager {
 
-    // WaitListWithQueue waitListWithQueue; 
-    // BorrowedBooksLinkedList borrowedBooksLinkedList
+    ; 
+   
+    UndoStack undoStack = new UndoStack();
     PopularityWithHeap popularity = new PopularityWithHeap();
     BookCatalogWithAVL_BST bookCatalog = new BookCatalogWithAVL_BST();
+    
+    //inject hashing
     private HashMap<Integer, Book> booksById = new HashMap<>();
 
     public LibraryManager() {
@@ -80,7 +84,7 @@ public class LibraryManager {
         return null;
     }
 
-    public void autoLend(int bookId) {
+    private void autoLend(int bookId) {
         int[] next = booksById.get(bookId).getNextWaitingUser();
         //get userId from waitList
         int userId = next[0];//neden array?
@@ -107,6 +111,10 @@ public class LibraryManager {
                 book.incrementBorrowCount();
                 popularity.insert(book);//for update popularity
 
+                //kayıt stack'te tutulur
+                Loan loan = new Loan(userId, bookId, true);
+                undoStack.push(loan);
+
                 System.out.println(book.getTitle() + " kitabı  " + u.getUserName() + " adlı kullanıcıya verildi.");
             } else {
                 book.addUserToWaitList(userId);
@@ -119,17 +127,68 @@ public class LibraryManager {
     public void returnFromUser(int bookId, int userId) {
         Book book = booksById.get(bookId);
         Book bookBST = bookCatalog.searchByTitle(book.getTitle());
-
         User u = getUserById(userId);
 
         u.getBorrowedBooks().delete(u.getBorrowedBooks().reachNode(book));
-        bookBST.setIsAvailable(false);
+        bookBST.setIsAvailable(true);
         book.setIsAvailable(true);
+
+        //kayıt stack'te tutulur
+        Loan loan = new Loan(userId, bookId, false);
+        undoStack.push(loan);
 
         autoLend(bookId);
 
         //waitlist güncelle???
     }
+
+    
+    //edit later
+    public void undo() {
+        Loan loan = undoStack.top();
+        String cancell = undoStack.undoLastOperation();
+
+        if (cancell.equals("LEND")) {
+            //cancell lend
+            Book book = booksById.get(loan.getBookId());
+            Book bookBST = bookCatalog.searchByTitle(book.getTitle());
+            User u = getUserById(loan.getReaderId());
+
+            if (book != null && u != null) {
+                if (book.isIsAvailable() == false) {
+                    popularity.removeBook(book);//for update popularity
+                    u.getBorrowedBooks().delete(u.getBorrowedBooks().reachNode(book));
+                    bookBST.setIsAvailable(true);
+                    book.setIsAvailable(true);
+                    book.decrementBorrowCount();
+                    popularity.insert(book);//for update popularity
+
+                } else {
+                    autoLend(loan.getBookId());
+                    //WAİTLİST GÜNCELLE
+
+                }
+            }
+
+        } else {
+            if (cancell.equals("RETURN")) {
+                //cancell return
+
+                Book book = booksById.get(loan.getBookId());
+                Book bookBST = bookCatalog.searchByTitle(book.getTitle());
+                User u = getUserById(loan.getReaderId());
+
+                u.getBorrowedBooks().add(book);
+                bookBST.setIsAvailable(false);
+                book.setIsAvailable(false);
+
+            }
+        }
+
+    }
+    
+    
+    
 
     public void printMostPopularBook() {
         popularity.getMostPopular().printBook();
