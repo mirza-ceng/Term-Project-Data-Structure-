@@ -7,6 +7,7 @@ package librarymanagementsystem.Bussiness;
 import java.util.HashMap;
 import librarymanagementsystem.DataClasses.BookCatalogWithAVL_BST;
 import librarymanagementsystem.DataClasses.BorrowedBooksLinkedList;
+import librarymanagementsystem.DataClasses.PopularityWithHeap;
 import librarymanagementsystem.DataClasses.WaitListWithQueue;
 import librarymanagementsystem.Entity.Book;
 import librarymanagementsystem.Entity.User;
@@ -16,9 +17,10 @@ import librarymanagementsystem.Entity.User;
  * @author 2005m
  */
 public class LibraryManager {
-    // WaitListWithQueue waitListWithQueue; 
-    // BorrowedBooksLinkedList borrowedBooksLinkedList;
 
+    // WaitListWithQueue waitListWithQueue; 
+    // BorrowedBooksLinkedList borrowedBooksLinkedList
+    PopularityWithHeap popularity = new PopularityWithHeap();
     BookCatalogWithAVL_BST bookCatalog = new BookCatalogWithAVL_BST();
     private HashMap<Integer, Book> booksById = new HashMap<>();
 
@@ -27,6 +29,8 @@ public class LibraryManager {
 
     //Katalog İşlemleri
     public void addBookToCatalog(Book book) {
+        //addToHeap
+        popularity.insert(book);
         bookCatalog.insert(book);
         booksById.put(book.getId(), book);
         System.out.println("'" + book.getTitle() + "'  eklendi.");
@@ -36,6 +40,7 @@ public class LibraryManager {
     public void removeFromCatalogByTitle(String title) {
         Book book = bookCatalog.searchByTitle(title);
         if (book != null) {
+            popularity.removeBook(book);
             bookCatalog.delete(book);
             booksById.remove(book.getId());
         }
@@ -44,6 +49,7 @@ public class LibraryManager {
     public void removeFromCatalogByAuthor(String author) {
         Book book = bookCatalog.searchByAuthor(author);
         if (book != null) {
+            popularity.removeBook(book);
             bookCatalog.delete(book);
             booksById.remove(book.getId());
 
@@ -74,9 +80,6 @@ public class LibraryManager {
         return null;
     }
 
-   
-
-    
     public void autoLend(int bookId) {
         int[] next = booksById.get(bookId).getNextWaitingUser();
         //get userId from waitList
@@ -97,11 +100,13 @@ public class LibraryManager {
 
         if (book != null && u != null) {
             if (book.isIsAvailable() == true) {
+                popularity.removeBook(book);//for update popularity
                 u.getBorrowedBooks().add(book);
-
                 bookBST.setIsAvailable(false);
                 book.setIsAvailable(false);
                 book.incrementBorrowCount();
+                popularity.insert(book);//for update popularity
+
                 System.out.println(book.getTitle() + " kitabı  " + u.getUserName() + " adlı kullanıcıya verildi.");
             } else {
                 book.addUserToWaitList(userId);
@@ -123,7 +128,12 @@ public class LibraryManager {
 
         autoLend(bookId);
 
-        //waitlist güncelle
+        //waitlist güncelle???
+    }
+
+    public void printMostPopularBook() {
+        popularity.getMostPopular().printBook();
+
     }
 
 }

@@ -21,6 +21,7 @@ public class Book {
     private boolean isAvailable;
     private String publicationYear;
     private int borrowCount = 0;
+
     private WaitListWithQueue waitList;
 
     // add WaitList using Queue
@@ -102,6 +103,10 @@ public class Book {
     //popülarite takibi için
     public void incrementBorrowCount() {
         borrowCount++;
+    }
+
+    public void setBorrowCount(int borrowCount) {
+        this.borrowCount = borrowCount;
     }
 
     public int getBorrowCount() {
