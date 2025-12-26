@@ -9,54 +9,53 @@ package librarymanagementsystem.DataClasses;
  * @author 2005m
  */
 public class WaitListWithQueue {
-    
-    class WaitListNode{
+
+    class WaitListNode {
+
         int userId;
         int bookId;
-        String requestDate;
         WaitListNode next;
-        
+
         public WaitListNode(int userId, int bookId) {
             this.userId = userId;
             this.bookId = bookId;
-            this.requestDate = java.time.LocalDate.now().toString();
             this.next = null;
         }
     }
-    
+
     private WaitListNode front;
     private WaitListNode rear;
     private int size;
-    
+
     public WaitListWithQueue() {
         this.front = null;
         this.rear = null;
         this.size = 0;
     }
-    
-    public void addToWaitList(int userId,int bookId) {
-        WaitListNode newNode = new WaitListNode(userId,bookId);
-        if(front == null) {
-            front = rear =newNode; 
-        }else{
-        rear.next = newNode;
-        rear = newNode;
-    }
+
+    public void addToWaitList(int userId, int bookId) {
+        WaitListNode newNode = new WaitListNode(userId, bookId);
+        if (front == null) {
+            front = rear = newNode;
+        } else {
+            rear.next = newNode;
+            rear = newNode;
+        }
         size++;
         System.out.println("Kullanıcı: " + userId + " bekleme listesine " + bookId
-        + " IDli kitabı ekledi.");
+                + " IDli kitabı ekledi.");
     }
-    
+
     public int[] getNextFromWaitList() {
         if (front == null) {
             System.out.println("Waitlist is empty!");
             return null;
         }
-        
+
         int[] result = new int[2];
         result[0] = front.userId;  // userId
         result[1] = front.bookId;  // bookId
-        
+
         if (front == rear) {
             front = null;
             rear = null;
@@ -67,33 +66,33 @@ public class WaitListWithQueue {
         System.out.println("Next: User " + result[0] + " for book " + result[1]);
         return result;
     }
-    
+
     public void showWaitList() {
-        if(front==null) {
+        if (front == null) {
             System.out.println("Waitlist ise empty!");
             return;
         }
         System.out.println("\n============= WAITLIST ==============");
         WaitListNode current = front;
         int pos = 1;
-        while(current!= null) {
-            System.out.println(pos + ". User: " + current.userId + "--> Book " + 
-                    current.bookId);
+        while (current != null) {
+            System.out.println(pos + ". User: " + current.userId + "--> Book "
+                    + current.bookId);
             current = current.next;
             pos++;
         }
         System.out.println(" ");
     }
-    
+
     public boolean removeUser(int userId, int bookId) {
-        if(front == null) {
+        if (front == null) {
             return false;
         }
-        if(front.userId == userId && front.bookId == bookId) {
-            if(front==rear) {
+        if (front.userId == userId && front.bookId == bookId) {
+            if (front == rear) {
                 front = null;
                 rear = null;
-            }else{
+            } else {
                 front = front.next;
             }
             size--;
@@ -111,10 +110,10 @@ public class WaitListWithQueue {
             }
             current = current.next;
         }
-        
+
         return false;
     }
-    
+
     public boolean hasWaitersForBook(int bookId) {
         WaitListNode current = front;
         while (current != null) {
@@ -125,18 +124,17 @@ public class WaitListWithQueue {
         }
         return false;
     }
-    
-    //????????????????????????????????????????????????**
-     public void peekNext() {
+
+    public void peekNext() {
         if (front == null) {
             System.out.println("Waitlist is empty");
         } else {
-            System.out.println("Next: User " + front.userId + 
-                             " for book " + front.bookId);
+            System.out.println("Next: User " + front.userId
+                    + " for book " + front.bookId);
         }
     }
-     
-     public int getSize() {
-         return size;
-     }
+
+    public int getSize() {
+        return size;
+    }
 }

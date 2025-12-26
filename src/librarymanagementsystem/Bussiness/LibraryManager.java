@@ -12,6 +12,7 @@ import librarymanagementsystem.DataClasses.UndoStack;
 import librarymanagementsystem.Entity.Book;
 import librarymanagementsystem.Entity.Loan;
 import librarymanagementsystem.Entity.User;
+import librarymanagementsystem.UserStoreHashMap;
 
 /**
  *
@@ -19,12 +20,10 @@ import librarymanagementsystem.Entity.User;
  */
 public class LibraryManager {
 
-    ; 
-   
     UndoStack undoStack = new UndoStack();
     PopularityWithHeap popularity = new PopularityWithHeap();
     BookCatalogWithAVL_BST bookCatalog = new BookCatalogWithAVL_BST();
-    
+    UserStoreHashMap users = new UserStoreHashMap(32);
     //inject hashing
     private HashMap<Integer, Book> booksById = new HashMap<>();
 
@@ -79,20 +78,24 @@ public class LibraryManager {
     }
 
     //Reader İşlemleri
-    //geçici(user depolama sistemi yazılmadı!!)
+   
+    public void addUser(String name, String surname, String userName, String password){
+    User u=new User(name, surname, userName, password);
+    users.put(u);
+    }
     public User getUserById(int userId) {
-        return null;
+        return users.get(userId);
     }
 
     private void autoLend(int bookId) {
-        int[] next = booksById.get(bookId).getNextWaitingUser();
-        //get userId from waitList
-        int userId = next[0];//neden array?
+        int[] next = booksById.get(bookId).getNextWaitingUser(); //get userId from waitList   and remove it
+        int userId = next[0];
         User u = getUserById(userId);
         if (booksById.get(bookId).hasWaitingUsers()) {
             lendToUser(bookId, userId);
             System.out.println("Sıradaki kullanıcıya verildi.");
         }
+        
 
     }
     //kitabın müsaitlik durumu sorgulanır,user ve book
@@ -139,11 +142,9 @@ public class LibraryManager {
 
         autoLend(bookId);
 
-        //waitlist güncelle???
     }
 
-    
-    //edit later
+    //undo last operation(lend or return)
     public void undo() {
         Loan loan = undoStack.top();
         String cancell = undoStack.undoLastOperation();
@@ -165,7 +166,6 @@ public class LibraryManager {
 
                 } else {
                     autoLend(loan.getBookId());
-                    //WAİTLİST GÜNCELLE
 
                 }
             }
@@ -186,9 +186,6 @@ public class LibraryManager {
         }
 
     }
-    
-    
-    
 
     public void printMostPopularBook() {
         popularity.getMostPopular().printBook();

@@ -4,6 +4,7 @@
  */
 package librarymanagementsystem.Entity;
 
+import java.util.Objects;
 import librarymanagementsystem.DataClasses.BorrowedBooksLinkedList;
 
 /**
@@ -17,17 +18,46 @@ public class User {//member
     private String userName;
     private String password;
     private int userId;
-
     private BorrowedBooksLinkedList borrowedBooks = new BorrowedBooksLinkedList(getUserId());
 
     //edit borrowedBooks using LinkedList
-    public User(String name, String surname, String userName, String password, int userId) {
+    public User(String name, String surname, String userName, String password) {
         this.name = name;
         this.surname = surname;
         this.userName = userName;
         this.password = password;
-        this.userId = userId;
+        this.userId = this.hashCode();
 
+    }
+
+    @Override
+    public int hashCode() {
+        int groupId = 123456789;
+        int result;
+        result = (userName != null ? userName.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+
+        return result ^ groupId;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        // Tip dönüşümü (Casting)
+        final User other = (User) obj;
+
+        // hashCode'da kullanılan alanların karşılaştırılması
+        // userName ve password alanlarını kontrol ediyoruz
+        if (!Objects.equals(this.userName, other.userName)) {
+            return false;
+        }
+        return Objects.equals(this.password, other.password);
     }
 
     public BorrowedBooksLinkedList getBorrowedBooks() {

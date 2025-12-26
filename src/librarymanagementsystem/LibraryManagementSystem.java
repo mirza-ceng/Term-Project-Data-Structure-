@@ -20,39 +20,20 @@ public class LibraryManagementSystem {
      */
     public static void main(String[] args) {
         
+// Sıralama: title, author, publisher, genre, publicationYear, id
+Book b1 = new Book("Suç ve Ceza", "Dostoyevski", "Can", Genre.BookGenres.CLASSICS, "1866", 1);
+Book b2 = new Book("1984", "George Orwell", "Can", Genre.BookGenres.LITERARY_FICTION, "1949", 2);
+Book b3 = new Book("Yüzüklerin Efendisi", "Tolkien", "Metis", Genre.BookGenres.FANTASY, "1954", 3);
+Book b4 = new Book("Sapiens", "Yuval Noah Harari", "Kolektif", Genre.BookGenres.HISTORY, "2011", 4);
+Book b5 = new Book("Sherlock Holmes", "A. Conan Doyle", "Everest", Genre.BookGenres.MYSTERY_THRILLER, "1887", 5);
+Book b6 = new Book("Dune", "Frank Herbert", "İthaki", Genre.BookGenres.SCIENCE_FICTION, "1965", 6);
+Book b7 = new Book("Simyacı", "Paulo Coelho", "Can", Genre.BookGenres.LITERARY_FICTION, "1988", 7);
+Book b8 = new Book("Nutuk", "Mustafa Kemal Atatürk", "YKY", Genre.BookGenres.HISTORY, "1927", 8);
+Book b9 = new Book("Küçük Prens", "Saint-Exupéry", "Mavi Bulut", Genre.BookGenres.OTHER, "1943", 9);
+Book b10 = new Book("Kürk Mantolu Madonna", "Sabahattin Ali", "YKY", Genre.BookGenres.ROMANCE, "1943", 10);
 
-       // Kalbin boyutunu ayarlamak için n değerini değiştirebilirsiniz
-        int n = 6;
 
-        // Üst kısım (İki yarım daire)
-        for (int i = n / 2; i <= n; i += 2) {
-            for (int j = 1; j < n - i; j += 2) {
-                System.out.print(" ");
-            }
-            for (int j = 1; j <= i; j++) {
-                System.out.print("*");
-            }
-            for (int j = 1; j <= n - i; j++) {
-                System.out.print(" ");
-            }
-            for (int j = 1; j <= i; j++) {
-                System.out.print("*");
-            }
-            System.out.println();
-        }
 
-        // Alt kısım (Ters üçgen)
-        for (int i = n; i >= 1; i--) {
-            for (int j = i; j < n; j++) {
-                System.out.print(" ");
-            }
-            for (int j = 1; j <= (i * 2) - 1; j++) {
-                System.out.print("*");
-            }
-            System.out.println();
-        }
-    
-        System.out.println("OZUR DILERIM ASKIM");
 
     }
 
