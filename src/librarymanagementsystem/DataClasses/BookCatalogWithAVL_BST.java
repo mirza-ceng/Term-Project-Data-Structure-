@@ -251,7 +251,11 @@ public class BookCatalogWithAVL_BST {
             }
         }
 
-        root.height = 1 + Math.max(height(root.right), height(root.left));
+        if (root == null) {
+            return null;
+        }
+
+        root.height = 1 + Math.max(height(root.right), height(root.left));//hata
 
         int balance = getBalance(root);
         //Rotations

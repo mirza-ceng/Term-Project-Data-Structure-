@@ -57,7 +57,10 @@ public class UndoStack {
     }
 
     public Loan top() {
-        return head.data;
+        if (head!=null) {
+           return head.data; 
+        }return null;
+        
     }
 
     public String undoLastOperation() {

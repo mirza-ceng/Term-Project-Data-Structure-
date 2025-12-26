@@ -45,17 +45,9 @@ public class LibraryManager {
         if (book != null) {
             popularity.removeBook(book);
             bookCatalog.delete(book);
+            System.out.println("SİLME İŞLEMİ BAŞARILI ");
+            book.printBook();
             booksById.remove(book.getId());
-        }
-    }
-
-    public void removeFromCatalogByAuthor(String author) {
-        Book book = bookCatalog.searchByAuthor(author);
-        if (book != null) {
-            popularity.removeBook(book);
-            bookCatalog.delete(book);
-            booksById.remove(book.getId());
-
         }
     }
 
@@ -78,11 +70,11 @@ public class LibraryManager {
     }
 
     //Reader İşlemleri
-   
-    public void addUser(String name, String surname, String userName, String password){
-    User u=new User(name, surname, userName, password);
-    users.put(u);
+    public void addUser(User u) {
+        users.put(u);
+        System.out.println(u.getName() + " " + u.getSurname() + "  kullanıcılara  eklendi.");
     }
+
     public User getUserById(int userId) {
         return users.get(userId);
     }
@@ -90,12 +82,13 @@ public class LibraryManager {
     private void autoLend(int bookId) {
         int[] next = booksById.get(bookId).getNextWaitingUser(); //get userId from waitList   and remove it
         int userId = next[0];
-        User u = getUserById(userId);
-        if (booksById.get(bookId).hasWaitingUsers()) {
+
+        if (!booksById.get(bookId).hasWaitingUsers()) {//sorun var
             lendToUser(bookId, userId);
-            System.out.println("Sıradaki kullanıcıya verildi.");
+
+        } else {
+            System.out.println("yanlıs");
         }
-        
 
     }
     //kitabın müsaitlik durumu sorgulanır,user ve book
@@ -135,7 +128,7 @@ public class LibraryManager {
         u.getBorrowedBooks().delete(u.getBorrowedBooks().reachNode(book));
         bookBST.setIsAvailable(true);
         book.setIsAvailable(true);
-
+        System.out.println(book.getTitle() + " kitabı  " + u.getUserName() + " adlı kullanıcıdan geri alındı.");
         //kayıt stack'te tutulur
         Loan loan = new Loan(userId, bookId, false);
         undoStack.push(loan);
@@ -145,6 +138,7 @@ public class LibraryManager {
     }
 
     //undo last operation(lend or return)
+    //SORUN VAR
     public void undo() {
         Loan loan = undoStack.top();
         String cancell = undoStack.undoLastOperation();
@@ -169,7 +163,7 @@ public class LibraryManager {
 
                 }
             }
-
+            System.out.println("KITAP VERME ISLEMI GERI ALINDI.");
         } else {
             if (cancell.equals("RETURN")) {
                 //cancell return
@@ -181,8 +175,9 @@ public class LibraryManager {
                 u.getBorrowedBooks().add(book);
                 bookBST.setIsAvailable(false);
                 book.setIsAvailable(false);
-
+                System.out.println("KITAP VERME ISLEMI GERI ALINDI.");
             }
+
         }
 
     }
