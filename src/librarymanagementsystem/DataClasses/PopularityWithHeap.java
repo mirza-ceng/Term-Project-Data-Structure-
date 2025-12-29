@@ -55,9 +55,9 @@ public class PopularityWithHeap {
         Book lastItem = heap.remove(lastIndex);
         heap.set(index, lastItem);
 
-        // Yeni gelen elemanı doğru konuma yerleştir
-        // (Büyük mü küçük mü bilmediğimiz için ikisini de çağırıyoruz, 
-        // hangisi gerekliyse o çalışacaktır)
+        // yeni gelen elemanı doğru konuma yerleştir
+        // büyük mü küçük mü bilmediğimiz için ikisini de çağırıyoruz
+        // hangisi gerekliyse o çalışacaktır!!
         heapifyUp(index);
         heapifyDown(index);
     }

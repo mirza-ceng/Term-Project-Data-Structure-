@@ -222,7 +222,7 @@ public class BookCatalogWithAVL_BST {
 
     private BinaryNode deleteRec(BinaryNode root, Book item, boolean isTitle) {
         if (root == null) {
-            return null; // Kitap bulunamadı veya ağaç boş.
+            return null; // Kitap bulunamadı veya ağaç boş
         }
 
         // Arama/Dolaşma
@@ -230,9 +230,9 @@ public class BookCatalogWithAVL_BST {
         String rootCompareField = isTitle ? root.data.getTitle() : root.data.getAuthor();
 
         if (compareTo(compareField, rootCompareField) < 0) {
-            root.left = deleteRec(root.left, item, isTitle); // Sol alt ağacın yeni kökünü alır.
+            root.left = deleteRec(root.left, item, isTitle); // Sol alt ağacın yeni kökünü alır
         } else if (compareTo(compareField, rootCompareField) > 0) {
-            root.right = deleteRec(root.right, item, isTitle); // Sağ alt ağacın yeni kökünü alır.
+            root.right = deleteRec(root.right, item, isTitle); // Sağ alt ağacın yeni kökünü alır
         } // Düğüm Bulundu (root = silinecek düğüm)
         else {
             // Durum 1 & 2: 0 veya 1 çocuk
@@ -242,11 +242,8 @@ public class BookCatalogWithAVL_BST {
                 root = root.left;
             } else {
                 // Durum 3: İki çocuk
-                // 1. Successor'ı bul (en küçük sağ alt ağaç)
                 BinaryNode successor = findMin(root.right);
-                // 2. Successor'ın değerini silinecek düğüme kopyala
                 root.data = successor.data;
-                // Successor sağ alt ağacın yeni kökü olacak şekilde deleteRec'i çağırırız
                 root.right = deleteRec(root.right, successor.data, isTitle);
             }
         }

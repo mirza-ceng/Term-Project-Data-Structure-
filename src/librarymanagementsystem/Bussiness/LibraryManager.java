@@ -83,7 +83,7 @@ public class LibraryManager {
         int[] next = booksById.get(bookId).getNextWaitingUser(); //get userId from waitList   and remove it
         int userId = next[0];
 
-        if (!booksById.get(bookId).hasWaitingUsers()) {//sorun var
+        if (!booksById.get(bookId).hasWaitingUsers()) {
             lendToUser(bookId, userId);
 
         } else {
@@ -138,8 +138,7 @@ public class LibraryManager {
     }
 
     //undo last operation(lend or return)
-    //SORUN VAR
-    public void undo() {
+        public void undo() {
         Loan loan = undoStack.top();
         String cancell = undoStack.undoLastOperation();
 
