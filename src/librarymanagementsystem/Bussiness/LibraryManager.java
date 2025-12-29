@@ -185,5 +185,8 @@ public class LibraryManager {
         popularity.getMostPopular().printBook();
 
     }
+    public Book getBookId(int bookId) {
+        return booksById.get(bookId);
+    }
 
 }
