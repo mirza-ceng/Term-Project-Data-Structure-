@@ -38,7 +38,6 @@ public class LibraryManager {
         booksById.put(book.getId(), book);
         System.out.println("'" + book.getTitle() + "'  eklendi.");
     }
-    //tekrar bak
 
     public void removeFromCatalogByTitle(String title) {
         Book book = bookCatalog.searchByTitle(title);
@@ -66,58 +65,70 @@ public class LibraryManager {
             System.out.println("ARAMA SONUCU : ");
 
             book.printBook();
+        }else{
+            System.out.println(author + " adli yazar bulunamadi");
         }
     }
 
     //Reader İşlemleri
     public void addUser(User u) {
         users.put(u);
-        System.out.println(u.getName() + " " + u.getSurname() + "  kullanıcılara  eklendi.");
+        System.out.println(u.getName() + " " + u.getSurname() + "  kullanicilara  eklendi.");
     }
 
     public User getUserById(int userId) {
         return users.get(userId);
     }
 
+    
     private void autoLend(int bookId) {
         int[] next = booksById.get(bookId).getNextWaitingUser(); //get userId from waitList   and remove it
-        int userId = next[0];
-
-        if (!booksById.get(bookId).hasWaitingUsers()) {
+        if (next != null) {
+            int userId = next[0];
             lendToUser(bookId, userId);
-
-        } else {
-            System.out.println("yanlıs");
         }
-
     }
     //kitabın müsaitlik durumu sorgulanır,user ve book
 
     public void lendToUser(int bookId, int userId) {
         Book book = booksById.get(bookId);
-        Book bookBST = bookCatalog.searchByTitle(book.getTitle());
-        User u = getUserById(userId);
-
-        if (book != null && u != null) {
-            if (book.isIsAvailable() == true) {
-                popularity.removeBook(book);//for update popularity
-                u.getBorrowedBooks().add(book);
-                bookBST.setIsAvailable(false);
-                book.setIsAvailable(false);
-                book.incrementBorrowCount();
-                popularity.insert(book);//for update popularity
-
-                //kayıt stack'te tutulur
-                Loan loan = new Loan(userId, bookId, true);
-                undoStack.push(loan);
-
-                System.out.println(book.getTitle() + " kitabı  " + u.getUserName() + " adlı kullanıcıya verildi.");
-            } else {
-                book.addUserToWaitList(userId);
-
-            }
+       
+        if (book == null) {
+            System.out.println("HATA: " + bookId + " ID'li kitap bulunamadı!");
+            System.out.println("Mevcut kitap ID'leri: 1-10");
+            return;
         }
+        User u = getUserById(userId); 
+        if (u == null) {
+            System.out.println("HATA: " + userId + " ID'li kullanıcı bulunamadı!");
+            System.out.println("Mevcut kullanıcılar:");
+            System.out.println("Seran: 210139848");
+            System.out.println("Ali: 512096690");
+            System.out.println("Ayse: -167938858");
+            System.out.println("Ece: 124512926");
+            System.out.println("Mehmet: 651347412");
+            return;
+        }      
+        Book bookBST = bookCatalog.searchByTitle(book.getTitle());
+        if (book.isIsAvailable() == true) {
+            popularity.removeBook(book);//for update popularity
+            u.getBorrowedBooks().add(book);
+            if (bookBST != null) {  // bookBST null kontrolü
+                bookBST.setIsAvailable(false);
+            }
+            book.setIsAvailable(false);
+            book.incrementBorrowCount();
+            popularity.insert(book);//for update popularity
 
+            //kayıt stack'te tutulur
+            Loan loan = new Loan(userId, bookId, true);
+            undoStack.push(loan);
+
+            System.out.println(book.getTitle() + " kitabı  " + u.getUserName() + " adlı kullanıcıya verildi.");
+        } else {
+            book.addUserToWaitList(userId);
+            System.out.println("Kitap müsait değil. " + u.getUserName() + " bekleme listesine eklendi.");
+        }
     }
 
     public void returnFromUser(int bookId, int userId) {

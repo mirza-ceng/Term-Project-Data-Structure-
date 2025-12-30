@@ -150,12 +150,12 @@ public class BookCatalogWithAVL_BST {
     }
 
     public Book searchByTitle(String item) {
-        if (searchByTitleRec(rootByTitle, item).data != null) {
-            return searchByTitleRec(rootByTitle, item).data;
-        }
-        return null;
-
+        BinaryNode node = searchByTitleRec(rootByTitle, item);  // Önce node'u al
+    if (node != null && node.data != null) {  // null kontrolü yap
+        return node.data;
     }
+    return null;
+}
 
     private BinaryNode searchByTitleRec(BinaryNode root, String item) {
         if (root == null) {
@@ -183,11 +183,14 @@ public class BookCatalogWithAVL_BST {
     }
 
     public Book searchByAuthor(String item) {
-        if (searchByAuthorRec(rootByAuthor, item).data != null) {
-            return searchByAuthorRec(rootByAuthor, item).data;
-        }
-        return null;
-    }
+        BinaryNode node = searchByAuthorRec(rootByAuthor, item);
+        if (node != null && node.data != null) {
+            return node.data;
+        }else{
+            System.out.println("Book wasnt founded: " + item);
+            return null;
+    }      
+   }
 
     private BinaryNode searchByAuthorRec(BinaryNode root, String item) {
         if (root == null) {

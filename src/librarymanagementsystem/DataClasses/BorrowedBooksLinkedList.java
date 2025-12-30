@@ -14,8 +14,8 @@ public class BorrowedBooksLinkedList {
     
     class Node {
         
-        Node next;
-        Book data;
+        public Node next;
+        public Book data;
         
         public Node(int userId, Book data) {
             

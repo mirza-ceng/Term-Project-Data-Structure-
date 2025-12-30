@@ -19,6 +19,15 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/ilknu/OneDrive/Desktop/LibraryManagementSystem/src/librarymanagementsystem/DataClasses/BorrowedBooksLinkedList.java</file>
+            <file>file:/C:/Users/ilknu/OneDrive/Desktop/LibraryManagementSystem/src/librarymanagementsystem/TestClass.java</file>
+            <file>file:/C:/Users/ilknu/OneDrive/Desktop/LibraryManagementSystem/src/librarymanagementsystem/UserStoreHashMap.java</file>
+            <file>file:/C:/Users/ilknu/OneDrive/Desktop/LibraryManagementSystem/src/librarymanagementsystem/DataClasses/UndoStack.java</file>
+            <file>file:/C:/Users/ilknu/OneDrive/Desktop/LibraryManagementSystem/src/librarymanagementsystem/DataClasses/BookCatalogWithAVL_BST.java</file>
+            <file>file:/C:/Users/ilknu/OneDrive/Desktop/LibraryManagementSystem/src/librarymanagementsystem/Entity/Book.java</file>
+            <file>file:/C:/Users/ilknu/OneDrive/Desktop/LibraryManagementSystem/src/librarymanagementsystem/DataClasses/PopularityWithHeap.java</file>
+            <file>file:/C:/Users/ilknu/OneDrive/Desktop/LibraryManagementSystem/src/librarymanagementsystem/Bussiness/LibraryManager.java</file>
+        </group>
     </open-files>
 </project-private>

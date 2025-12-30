@@ -24,18 +24,18 @@ public class TestClass {
         // TODO code application logic here
         Scanner scanner = new Scanner(System.in);
         LibraryManager manager = new LibraryManager();
-        System.out.println("KÜTÜPHANE SİSTEMİNE HOŞGELDİNİZ!!");
+        System.out.println("KUTUPHANE SISTEMINE HOSGELDINIZ!!");
 
-        Book b1 = new Book("Suç ve Ceza", "Dostoyevski", "Can", Genre.BookGenres.CLASSICS, "1866", 1);
+        Book b1 = new Book("Suc ve Ceza", "Dostoyevski", "Can", Genre.BookGenres.CLASSICS, "1866", 1);
         Book b2 = new Book("1984", "George Orwell", "Can", Genre.BookGenres.LITERARY_FICTION, "1949", 2);
-        Book b3 = new Book("Yüzüklerin Efendisi", "Tolkien", "Metis", Genre.BookGenres.FANTASY, "1954", 3);
+        Book b3 = new Book("Yuzuklerin Efendisi", "Tolkien", "Metis", Genre.BookGenres.FANTASY, "1954", 3);
         Book b4 = new Book("Sapiens", "Yuval Noah Harari", "Kolektif", Genre.BookGenres.HISTORY, "2011", 4);
         Book b5 = new Book("Sherlock Holmes", "A. Conan Doyle", "Everest", Genre.BookGenres.MYSTERY_THRILLER, "1887", 5);
-        Book b6 = new Book("Dune", "Frank Herbert", "İthaki", Genre.BookGenres.SCIENCE_FICTION, "1965", 6);
-        Book b7 = new Book("Simyacı", "Paulo Coelho", "Can", Genre.BookGenres.LITERARY_FICTION, "1988", 7);
-        Book b8 = new Book("Nutuk", "Mustafa Kemal Atatürk", "YKY", Genre.BookGenres.HISTORY, "1927", 8);
-        Book b9 = new Book("Küçük Prens", "Saint-Exupéry", "Mavi Bulut", Genre.BookGenres.OTHER, "1943", 9);
-        Book b10 = new Book("Kürk Mantolu Madonna", "Sabahattin Ali", "YKY", Genre.BookGenres.ROMANCE, "1943", 10);
+        Book b6 = new Book("Dune", "Frank Herbert", "Ithaki", Genre.BookGenres.SCIENCE_FICTION, "1965", 6);
+        Book b7 = new Book("Simyaci", "Paulo Coelho", "Can", Genre.BookGenres.LITERARY_FICTION, "1988", 7);
+        Book b8 = new Book("Nutuk", "Mustafa Kemal Ataturk", "YKY", Genre.BookGenres.HISTORY, "1927", 8);
+        Book b9 = new Book("Kucuk Prens", "Saint-Exupery", "Mavi Bulut", Genre.BookGenres.OTHER, "1943", 9);
+        Book b10 = new Book("Kurk Mantolu Madonna", "Sabahattin Ali", "YKY", Genre.BookGenres.ROMANCE, "1943", 10);
 
         User u1 = new User("Seran", "AKTAS", "SERAN_AKTAS", "CIMBOMBOM");
         User u2 = new User("Ali", "Yilmaz", "ali_yilmaz", "Sifre123!");
@@ -53,7 +53,9 @@ public class TestClass {
         manager.addBookToCatalog(b8);
         manager.addBookToCatalog(b9);
         manager.addBookToCatalog(b10);
-
+        
+        System.out.println("");
+        
         manager.addUser(u1);
         manager.addUser(u2);
         manager.addUser(u3);
@@ -62,45 +64,45 @@ public class TestClass {
 
         int choice;
         while (true) {
-            System.out.println("=========== KUTUPHANE YONETIM SISTEMI ===========");
-            System.out.println("1. Kitap Ara (Başlık ile)");
+            System.out.println("\n=========== KUTUPHANE YONETIM SISTEMI ===========");
+            System.out.println("1. Kitap Ara (Baslik ile)");
             System.out.println("2. Kitap Ara (Yazar ile)");
-            System.out.println("3. Kitap Ödünç Ver");
-            System.out.println("4. Kitap İade Et");
-            System.out.println("5. Bekleme Listesini Görüntüle");
-            System.out.println("6. En Popüler Kitabı Görüntüle");
-            System.out.println("7. Son İşlemi Geri Al (Undo)");
+            System.out.println("3. Kitap Odunc Ver");
+            System.out.println("4. Kitap Iade Et");
+            System.out.println("5. Bekleme Listesini Goruntule");
+            System.out.println("6. En Populer Kitabi goruntule");
+            System.out.println("7. Son Islemi Geri Al (Undo)");
             System.out.println("8. Kitap Sil");
-            System.out.println("0. Çıkış");
+            System.out.println("0. Cikis");
 
-            System.out.print("Seçiminiz: ");
+            System.out.print("Seciminiz: ");
             choice = scanner.nextInt();
             scanner.nextLine();
 
             switch (choice) {
                 case 1:
-                    System.out.print("Aranacak kitap başlığını giriniz:");
+                    System.out.print("Aranacak kitap basligini giriniz:");
                     String searchTitle = scanner.nextLine();
                     manager.searchInCatalogByTitle(searchTitle);
                     break;
 
                 case 2:
-                    System.out.print("Aranacak yazar adını giriniz:");
+                    System.out.print("Aranacak yazar adini giriniz:");
                     String searchAuthor = scanner.nextLine();
                     manager.searchInCatalogByAuthor(searchAuthor);
                     break;
                 case 3:
-                    System.out.print("Ödünç verilecek kitap ID:");
+                    System.out.print("Odunc verilecek kitap ID:");
                     int lendBookId = scanner.nextInt();
 
-                    System.out.println("Mevcut Kullanıcı ID'leri:");
+                    System.out.println("Mevcut Kullanici ID'leri:");
                     System.out.println("Seran: " + u1.getUserId());
                     System.out.println("Ali: " + u2.getUserId());
-                    System.out.println("Ayşe: " + u3.getUserId());
+                    System.out.println("Ayse: " + u3.getUserId());
                     System.out.println("Ece: " + u4.getUserId());
                     System.out.println("Mehmet: " + u5.getUserId());
 
-                    System.out.print("Ödünç alacak kullanıcı ID: ");
+                    System.out.print("Odunc alacak kullanici ID: ");
                     int lendUserId = scanner.nextInt();
 
                     manager.lendToUser(lendBookId, lendUserId);
@@ -109,14 +111,14 @@ public class TestClass {
                 case 4:
                     System.out.print("İade edilecek kitap ID: ");
                     int returnBookId = scanner.nextInt();
-                    System.out.println("İade eden kullanıcı ID: ");
+                    System.out.println("İade eden kullanici ID: ");
                     int returnUserId = scanner.nextInt();
 
                     manager.returnFromUser(returnBookId, returnUserId);
                     break;
 
                 case 5:
-                    System.out.println("Bekleme listesini görüntülemek istedğiniz kitap ID: ");
+                    System.out.println("Bekleme listesini goruntulemek istediginiz kitap ID: ");
                     int waitlistBookId = scanner.nextInt();
 
                     Book waitlistBook = getBookByIdFromManager(manager, waitlistBookId);
@@ -134,7 +136,7 @@ public class TestClass {
                     break;
 
                 case 7:
-                    System.out.println("Son işlem geri alınıyor...");
+                    System.out.println("Son islem geri aliniyor...");
                     manager.undo();
                     break;
 
@@ -161,7 +163,7 @@ public class TestClass {
             java.util.HashMap<Integer, Book> booksById = (java.util.HashMap<Integer, Book>) booksByIdField.get(manager);
             return booksById.get(bookId);
         } catch (Exception e) {
-            System.out.println("Kitap bulunamadı veya erişim hatası: " + e.getMessage());
+            System.out.println("Kitap bulunamadı veya erisim hatasi: " + e.getMessage());
             return null;
         }
     }
