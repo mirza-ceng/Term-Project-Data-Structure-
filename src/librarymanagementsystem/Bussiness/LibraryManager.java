@@ -81,15 +81,10 @@ public class LibraryManager {
 
     private void autoLend(int bookId) {
         int[] next = booksById.get(bookId).getNextWaitingUser(); //get userId from waitList   and remove it
-        int userId = next[0];
-
-        if (!booksById.get(bookId).hasWaitingUsers()) {
+        if (next != null) {
+            int userId = next[0];
             lendToUser(bookId, userId);
-
-        } else {
-            System.out.println("yanlıs");
         }
-
     }
     //kitabın müsaitlik durumu sorgulanır,user ve book
 
